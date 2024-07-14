@@ -1,9 +1,10 @@
 %% Plotting Pulse and Autocorrelation comparison 
 clear; clc; close all;
+addpath('src');
 
 %% ====== Data File ====== %%
 % setting up directories and file name
-name_file = '10h_1g_c.mat';
+name_file = '9h_1g_nc.mat';
 has11h = contains(name_file, '11h');
 has10h = contains(name_file, '10h');
 
