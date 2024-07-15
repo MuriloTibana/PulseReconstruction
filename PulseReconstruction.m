@@ -15,8 +15,11 @@ addpath('src');
 
 %% --------- Run Setup --------- %% 
 % Reconstruction Parameters: 
-harmonicOne = 9; harmonicTwo = 11; harmonicThree = 10;
-gaussians = 3; harmonics = 3;
+harmonicOne = 9; 
+harmonicTwo = 11; 
+harmonicThree = 10;
+gaussians = 3; 
+harmonics = 3;
 reconstruct_single_color = false;
     % true = reconstruct a single-color pulse (9th)
     % false = reconstruct a multicolor pulse (9th + 11th)
@@ -36,7 +39,8 @@ remove_frequency = true;
 gaussian_variation = false; % (only valid for 6 gaussians multicolor)
     % true = each color have different number of gaussians
     % false = each color have the same number of gaussians
-    first_color = 4; second_color = 6 - first_color;
+    first_color = 4; 
+    second_color = 6 - first_color;
 
 N_iterations = 500; 
 tau_max = 1000; dtau = 0.2;
