@@ -9,7 +9,7 @@ FILES=$(ssh "$REMOTE_USER@$REMOTE_SERVER" "find $REMOTE_DIR -type f -name '*.mat
 
 if [ -n "$FILES" ]; then
     for FILE in $FILES; do
-        sshpass -p 'Oarkmoon4004#' scp -r "$REMOTE_USER@$REMOTE_SERVER:$FILE" "$LOCAL_DIR"
+         rsync -av --ignore-existing --progress "$REMOTE_USER@$REMOTE_SERVER:$FILE" "$LOCAL_DIR"
     done
 else
     echo "No files found."

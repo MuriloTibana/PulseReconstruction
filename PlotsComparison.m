@@ -4,25 +4,21 @@ addpath('src');
 
 %% ====== Data File ====== %%
 % setting up directories and file name
-name_file = '9h_1g_nc.mat';
+name_file = '9h_11h_4g_nc_windowing.mat';
 has11h = contains(name_file, '11h');
 has10h = contains(name_file, '10h');
-
-save_figures = false;
+save_everything = true;
 
 if has11h 
-    data_dir = 'results\multi_color\';
     plot_dir = 'figures\multi_color\';
     error_dir = 'errors\multi_color\';
 else
-    data_dir = 'results\single_color\';
     plot_dir = 'figures\single_color\';
     error_dir = 'errors\single_color\';
 end
 
 % load data
-load(fullfile(data_dir, name_file));
-% guess = new_guess;
+load(fullfile('results\', name_file));
 
 % parsing file name
 dot_index = strfind(name_file, 'c');
@@ -30,7 +26,7 @@ name_plot = name_file(1:dot_index);
 
 %% ====== Reconstruction Parameters ====== %%
 % defining parameters
-time_reverse = true; initial_guess = [0 -200];
+time_reverse = true; initial_guess = [0 -350];
 tau_max = 1000; dtau = 0.2;
 correlation_delay = linspace(-tau_max,tau_max,tau_max/dtau+1);
 
@@ -126,7 +122,7 @@ ion_error = sqrt(dtau * sum(obj.^2));
 %% ====== Plotting ====== %% 
 property_label = {'FontSize', 14, 'FontName', 'Times New Roman'};
 property_title = {'FontSize', 12, 'FontName', 'Times New Roman'};
-
+center_graph = -250;
 % pulse comparison
 fig1 = figure(1);
 yyaxis left
@@ -143,7 +139,11 @@ legend({'$|\tilde{f}_{exact}(t)|$', '$|\tilde{f}_{estimated}(t)|$','$\omega_{exa
 xlabel('Time [a.u.]', 'Interpreter', 'latex', property_label{:});
 
 title(sprintf('Pulse Comparison: %s\nField Error: %.10f', name_plot, field_error), 'Interpreter', 'none', property_title{:});
-xlim([-800 800]);
+if has11h 
+    xlim([-600 600]);
+else
+    xlim([-500 500]);
+end
 grid on;
 
 % autocorrelation comparison
@@ -159,7 +159,7 @@ xlim([-600 600]);
 grid on;
 
 %% ======= Saving Everything ======= % 
-if save_figures
+if save_everything
     file_name_pulse = strcat(name_plot,'_PulseComparison');
     saveas(fig1,fullfile(plot_dir, file_name_pulse),'jpeg');
     
@@ -168,4 +168,7 @@ if save_figures
     
     file_name_errors = strcat(name_plot, '_erros');
     save(fullfile(error_dir, file_name_errors), "field_error", "ion_error")
+
+    save(fullfile('results\', name_file),"field_error", "ion_error", "experiment_vals", "estimated_vals", ...
+        "experiment_omega", "estimated_omega", "center_graph", "name_plot" ,"-append")
 end
